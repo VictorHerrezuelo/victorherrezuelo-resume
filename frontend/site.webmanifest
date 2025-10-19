@@ -1,0 +1,19 @@
+{
+    "name": "Víctor Herrezuelo | Cloud Resume",
+    "short_name": "Víctor Herrezuelo",
+    "icons": [
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#5aa9ff",
+    "background_color": "#0f1115",
+    "display": "standalone"
+}

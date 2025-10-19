@@ -129,6 +129,26 @@ h2 {
   font-weight: 600;
 }
 
+.sub-role-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem 1rem;
+  margin-bottom: .5rem;
+}
+
+.sub-role-head h4 {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.sub-role ul {
+  margin-top: 0.25rem;
+}
+
 .meta {
   color: var(--muted);
   font-size: .95rem;
@@ -153,20 +173,23 @@ h2 {
   padding-left: 1.1rem;
 }
 
+.indent {
+  margin-left: 1.5rem;
+}
+
 /* Certifications */
 .certifications-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
 .certification-badge {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: 1rem;
+  justify-content: center;
+  padding: 0.75rem;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -179,22 +202,9 @@ h2 {
 }
 
 .certification-badge img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 0.5rem;
-}
-
-.certification-badge h4 {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.certification-badge .cert-date {
-  font-size: 0.8rem;
-  color: var(--muted);
-  margin: 0;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }
 
 .certification-placeholder {
@@ -235,8 +245,16 @@ h2 {
 }
 
 @media (max-width: 540px) {
+  .container {
+    padding: 0 1.5rem 2rem;
+  }
+
   .header {
     padding: 1rem 0;
+  }
+
+  .title {
+    margin: 0 1rem;
   }
 
   .title h1 {
@@ -257,19 +275,20 @@ h2 {
   .contact {
     margin-top: 0.75rem;
     font-size: .85rem;
+    margin: 0 1rem;
   }
 
   .certifications-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 0.75rem;
   }
 
   .certification-badge {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .certification-badge img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
 }

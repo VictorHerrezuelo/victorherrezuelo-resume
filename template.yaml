@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: >
+  Cloud Resume Challenge - backend visitor counter stack
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 10
+    MemorySize: 128  
+  Api:
+    Cors:
+      AllowOrigin: "'*'"
+      AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+      AllowMethods: "'GET,OPTIONS'"
+
+
+Resources:
+  VisitorCountTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1  
+  VisitorIdsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/visitor_counter/
+      Handler: app.lambda_handler
+      Description: Lambda to increment and return visitor count
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref VisitorCountTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref VisitorIdsTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCountTable
+          COUNT_TABLE: !Ref VisitorCountTable
+          IDS_TABLE: !Ref VisitorIdsTable
+      Events:
+        VisitorApi:
+          Type: Api
+          Properties:
+            Path: /counter
+            Method: GET
+        VisitorApiPost:
+          Type: Api
+          Properties:
+            Path: /counter
+            Method: POST
+
+Outputs:
+  VisitorApiUrl:
+    Description: "API endpoint for visitor counter"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/counter"

@@ -97,3 +97,20 @@ function getVisitorId() {
     gridElement.innerHTML = '<div class="certification-placeholder">Unable to load certifications at this time.</div>';
   }
 })();
+
+/**
+ * Architecture toggle logic
+ */
+
+document.getElementById('toggle-architecture').addEventListener('click', () => {
+  const section = document.getElementById('architecture-section');
+  const button = document.getElementById('toggle-architecture');
+
+  if (section.style.display === 'none') {
+    section.style.display = 'block';
+    button.textContent = 'Hide Architecture';
+  } else {
+    section.style.display = 'none';
+    button.textContent = 'Show Architecture';
+  }
+});

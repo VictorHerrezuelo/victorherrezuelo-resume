@@ -59,7 +59,7 @@ function getVisitorId() {
     },
     {
       name: 'AWS Certified AI Practitioner',
-      image: 'https://images.credly.com/size/340x340/images/61f56aa4-5a7e-4fdf-9e8c-3d069f2f7c9f/image.png',
+      image: 'https://images.credly.com/images/4d4693bb-530e-4bca-9327-de07f3aa2348/image.png',
       url: 'https://www.credly.com/org/amazon-web-services/badge/aws-certified-ai-practitioner'
     },
     {
@@ -81,10 +81,7 @@ function getVisitorId() {
     // Clear loading placeholder
     gridElement.innerHTML = '';
 
-    // Use fallback badges if API returns empty array
-    const badgesToDisplay = badges.length > 0 ? badges : fallbackBadges;
-
-    // Sort badges if they come from API
+    // Sort badges if they come from API, otherwise use fallback
     const sortedBadges = badges.length > 0 
       ? badges.sort((a, b) => {
           if (a.order !== b.order) {

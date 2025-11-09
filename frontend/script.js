@@ -50,6 +50,25 @@ function getVisitorId() {
 (async function initCredlyBadges() {
   const gridElement = document.getElementById('certifications-grid');
 
+  // Hardcoded fallback badges
+  const fallbackBadges = [
+    {
+      name: 'AWS Certified Cloud Practitioner',
+      image: 'https://images.credly.com/size/340x340/images/00634f82-b07f-4bbd-a6bb-53de397fc3a6/image.png',
+      url: 'https://www.credly.com/org/amazon-web-services/badge/aws-certified-cloud-practitioner'
+    },
+    {
+      name: 'AWS Certified AI Practitioner',
+      image: 'https://images.credly.com/size/340x340/images/61f56aa4-5a7e-4fdf-9e8c-3d069f2f7c9f/image.png',
+      url: 'https://www.credly.com/org/amazon-web-services/badge/aws-certified-ai-practitioner'
+    },
+    {
+      name: 'AWS Certified Solutions Architect - Associate',
+      image: 'https://images.credly.com/size/340x340/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png',
+      url: 'https://www.credly.com/org/amazon-web-services/badge/aws-certified-solutions-architect-associate'
+    }
+  ];
+
   try {
     const response = await fetch('https://mqgrmeiggk.execute-api.us-east-2.amazonaws.com/credly/badges?email=vherrez@amazon.es');
 
@@ -62,28 +81,27 @@ function getVisitorId() {
     // Clear loading placeholder
     gridElement.innerHTML = '';
 
-    // Sort badges: primary by order field, secondary by issue date (newest first)
-    const sortedBadges = badges.sort((a, b) => {
-      if (a.order !== b.order) {
-        return a.order - b.order;
-      }
-      return new Date(b.issued) - new Date(a.issued);
-    });
+    // Use fallback badges if API returns empty array
+    const badgesToDisplay = badges.length > 0 ? badges : fallbackBadges;
 
-    // Handle empty results
-    if (sortedBadges.length === 0) {
-      gridElement.innerHTML = '<div class="certification-placeholder">No certifications found.</div>';
-      return;
-    }
+    // Sort badges if they come from API
+    const sortedBadges = badges.length > 0 
+      ? badges.sort((a, b) => {
+          if (a.order !== b.order) {
+            return a.order - b.order;
+          }
+          return new Date(b.issued) - new Date(a.issued);
+        })
+      : fallbackBadges;
 
     // Create interactive badge elements
     sortedBadges.forEach(badge => {
       const badgeLink = document.createElement('a');
       badgeLink.href = badge.url;
       badgeLink.target = '_blank';
-      badgeLink.rel = 'noopener noreferrer'; // Security best practice
+      badgeLink.rel = 'noopener noreferrer';
       badgeLink.className = 'certification-badge';
-      badgeLink.title = badge.name; // Tooltip on hover
+      badgeLink.title = badge.name;
 
       badgeLink.innerHTML = `
         <img src="${badge.image}" alt="${badge.name}" loading="lazy">
@@ -94,7 +112,22 @@ function getVisitorId() {
 
   } catch (error) {
     console.error('Error fetching Credly badges:', error);
-    gridElement.innerHTML = '<div class="certification-placeholder">Unable to load certifications at this time.</div>';
+    // Show fallback badges on error
+    gridElement.innerHTML = '';
+    fallbackBadges.forEach(badge => {
+      const badgeLink = document.createElement('a');
+      badgeLink.href = badge.url;
+      badgeLink.target = '_blank';
+      badgeLink.rel = 'noopener noreferrer';
+      badgeLink.className = 'certification-badge';
+      badgeLink.title = badge.name;
+
+      badgeLink.innerHTML = `
+        <img src="${badge.image}" alt="${badge.name}" loading="lazy">
+      `;
+
+      gridElement.appendChild(badgeLink);
+    });
   }
 })();
 

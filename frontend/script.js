@@ -7,6 +7,36 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /**
+ * Calculate duration between start date and now
+ */
+function calculateDuration(startDate) {
+  const start = new Date(startDate);
+  const now = new Date();
+  
+  const diffTime = Math.abs(now - start);
+  const diffMonths = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 30.44)); // Average days per month
+  
+  if (diffMonths < 1) {
+    return '< 1 mon';
+  } else if (diffMonths < 12) {
+    return `${diffMonths} mon`;
+  } else {
+    const years = Math.floor(diffMonths / 12);
+    const months = diffMonths % 12;
+    if (months === 0) {
+      return `${years} yr${years > 1 ? 's' : ''}`;
+    }
+    return `${years} yr${years > 1 ? 's' : ''} ${months} mon`;
+  }
+}
+
+// Update current role duration
+const currentRoleDuration = document.getElementById('current-role-duration');
+if (currentRoleDuration) {
+  currentRoleDuration.textContent = calculateDuration('2024-10-01');
+}
+
+/**
  * Extracts visitor ID
  */
 function getVisitorId() {
